@@ -1,0 +1,30 @@
+msgbox "Welcome to my email sending service! (sorry i cant view inboxes)"
+l = InputBox("Email of you here: (This is for sending the email)")
+x = InputBox("Password for your email (If you are using Google, turn off Block less secure apps) (This is used for the authentication process required to send an email, duh. Just trust me, if you don't, go open this file in your text editor!)")
+m = InputBox("Input the SMTP/mail server: (Type smtp.gmail.com if you don't know)")
+v = InputBox("Email of the person you want to send mail to:")
+f = InputBox("Subject of email:")
+g = InputBox("Email text/body:")
+Set emailObj      = CreateObject("CDO.Message")
+
+emailObj.From     = l
+emailObj.To       = v
+
+emailObj.Subject  = f
+emailObj.TextBody = g
+Set emailConfig = emailObj.Configuration
+
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/smtpserver") = m
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 465
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/sendusing")    = 2  
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1  
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/smtpusessl")      = true 
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/sendusername")    = l
+emailConfig.Fields("http://schemas.microsoft.com/cdo/configuration/sendpassword")    = x
+
+emailConfig.Fields.Update
+
+
+emailObj.Send
+
+msgbox "Email sent!"
